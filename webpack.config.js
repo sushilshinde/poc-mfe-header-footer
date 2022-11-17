@@ -34,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "public", "index.html"),
+      template: path.join(__dirname, "src", "index.html"),
     }),
     new MiniCssExtractPlugin(),
     // MODULE FEDERATION
@@ -42,10 +42,9 @@ module.exports = {
         name: "HeaderAndFooter",
         filename: "moduleEntry.js",
         exposes : {
-          "./Header": "./src/App.js"
+          "./Header": "./src/components/Header"
         },
         remotes: {
-          Activities: `Activities@http://localhost:3003/moduleEntry.js`
         },
         shared: {
             ...dependencies,

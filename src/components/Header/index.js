@@ -1,9 +1,7 @@
 import React from "react";
-import "./App.css";
+import "./index.css";
 
-// const Activities = React.lazy(() => import('Activities/CommitsCard'))
-
-function App() {
+function Header() {
   return (
     <header className="border border-light bg-info">
       <div className="input-group d-flex justify-content-center mt-4 mb-4">
@@ -14,9 +12,8 @@ function App() {
           <i className="fa fa-search" aria-hidden="true"></i>
         </button>
       </div>
-      {/* <Activities /> */}
     </header>
   );
 }
 
-export default App;
+export default Header;
