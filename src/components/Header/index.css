@@ -6,4 +6,16 @@
 i.fa-search {
   font-size: 21px;
 }
+
+input {
+  position: relative !important;
+}
+
+.close {
+  position: absolute !important;
+  top: 0;
+  right: 29%;
+  line-height: 20px;
+  font-size: 21px;
+}
 /* HEADER STYLES END */
