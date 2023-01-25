@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import "./index.css";
 
 /**
@@ -9,6 +10,7 @@ import "./index.css";
  */
 function Header() {
     const [searchValue, setSearchValue] = useState("");
+    const [username, setUsername] = useState("");
     const handleSearch = () => {
         const event = new CustomEvent("getSearchTerm", {
             detail: searchValue.trim(),
@@ -17,12 +19,21 @@ function Header() {
     };
 
     const handleClear = () => {
-        setSearchValue('')
+        setSearchValue("");
         const event = new CustomEvent("getSearchTerm", {
-            detail: '',
+            detail: "",
         });
         window.dispatchEvent(event);
-    }
+    };
+
+    useEffect(() => {
+        window.addEventListener("getUserDetails", (event) => {
+            setUsername(event.detail.username);
+        });
+        return () => {
+            window.removeEventListener("getUserDetails");
+        };
+    }, []);
     return (
         <header className="border border-light bg-info">
             <div className="input-group d-flex justify-content-center mt-4 mb-4">
@@ -35,7 +46,17 @@ function Header() {
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                     />
-                    <button type="button" className="btn btn-white close" aria-label="Close" style={(searchValue.trim().length === 0) ? { display: 'none' } : { display : 'block'}} onClick={handleClear}>
+                    <button
+                        type="button"
+                        className="btn btn-white close"
+                        aria-label="Close"
+                        style={
+                            searchValue.trim().length === 0
+                                ? { display: "none" }
+                                : { display: "block" }
+                        }
+                        onClick={handleClear}
+                    >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -47,6 +68,32 @@ function Header() {
                 >
                     <i className="fa fa-search" aria-hidden="true"></i>
                 </button>
+            </div>
+            <div>
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li className="nav-item dropdown">
+                        <button
+                            className="nav-link dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            Welcome{" "}
+                            {username.charAt(0).toUpperCase() +
+                                username.slice(1)}
+                        </button>
+                        <ul className="dropdown-menu">
+                            <li>
+                                <button className="dropdown-item" onClick={() => {
+                                    localStorage.removeItem('user-token')
+                                    window.location.href = process.env.LOGOUT_URL
+                                }}>
+                                <i className="fa fa-sign-out" aria-hidden="true"></i>
+                                    Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </header>
     );
